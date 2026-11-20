@@ -37,7 +37,7 @@ svg {
 .app-shell {
   min-height: 100vh;
   display: grid;
-  grid-template-columns: 232px minmax(0, 1fr);
+  grid-template-columns: clamp(220px, 17vw, 270px) minmax(0, 1fr);
 }
 
 .sidebar {
@@ -117,7 +117,7 @@ svg {
   color: #d8c397;
   background: transparent;
   text-align: left;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   text-shadow: 0 1px #24170f;
 }
@@ -186,14 +186,14 @@ svg {
 .topbar h1 {
   margin: 2px 0 0;
   color: #f3dfac;
-  font-size: 23px;
+  font-size: clamp(24px, 1.35rem + 0.5vw, 32px);
   text-shadow: 0 2px #24170f;
 }
 
 .eyebrow {
   margin: 0 0 4px;
   color: #806137;
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1.7px;
@@ -245,9 +245,9 @@ svg {
 }
 
 .content {
-  max-width: 1180px;
+  max-width: 1440px;
   margin: 0 auto;
-  padding: 24px 38px 46px;
+  padding: clamp(28px, 3vw, 44px) clamp(30px, 4vw, 64px) 70px;
 }
 
 .panel, .hero-panel, .stat-strip, .quest-card, .achievement-card, .inventory-item, .board-toolbar, .chronicle-list {
@@ -262,7 +262,7 @@ svg {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 13px 17px 11px;
+  padding: 17px 22px 15px;
   border-bottom: 3px solid #71311d;
   background: linear-gradient(180deg, #ef6550, #b8322f);
   box-shadow: inset 0 2px rgba(255, 255, 255, 0.55);
@@ -271,8 +271,26 @@ svg {
 .panel-header h2 {
   margin: 0;
   color: #fff4bd;
-  font-size: 18px;
+  font-size: clamp(20px, 1.1rem + 0.35vw, 24px);
   text-shadow: 0 2px #792923, 1px 2px #792923;
+}
+
+.panel-header .eyebrow {
+  color: #fff0b0;
+}
+
+.attributes-preview .panel-header, .attribute-sheet .panel-header {
+  border-bottom-color: #385d35;
+  background: linear-gradient(180deg, #79af54, #47763d);
+}
+
+.lower-columns .panel-header {
+  border-bottom-color: #51341e;
+  background: linear-gradient(180deg, #8b7044, #60462c);
+}
+
+.lower-columns .panel-header .eyebrow {
+  color: #f4d883;
 }
 
 .text-button {
@@ -289,16 +307,16 @@ svg {
 
 .hall-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.5fr) minmax(300px, 0.85fr);
-  gap: 14px;
+  grid-template-columns: minmax(0, 1.45fr) minmax(340px, 0.9fr);
+  gap: 20px;
 }
 
 .hero-panel {
-  min-height: 188px;
+  min-height: 210px;
   display: flex;
   align-items: center;
-  gap: 22px;
-  padding: 20px 24px;
+  gap: 26px;
+  padding: 26px 30px;
   background: linear-gradient(120deg, rgba(255, 247, 205, 0.95), rgba(212, 197, 137, 0.94));
 }
 
@@ -331,16 +349,16 @@ svg {
 }
 
 .hero-details h2 {
-  margin: 0 0 14px;
-  font-size: 27px;
+  margin: 0 0 18px;
+  font-size: clamp(28px, 1.35rem + 0.65vw, 36px);
 }
 
 .level-line {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 7px;
+  margin-bottom: 9px;
   font-family: "Trebuchet MS", sans-serif;
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .level-line strong {
@@ -370,15 +388,15 @@ svg {
 .stat-strip {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  padding: 7px 10px;
+  padding: 10px 13px;
 }
 
 .stat-strip > div {
-  min-height: 82px;
+  min-height: 92px;
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 9px 10px;
+  gap: 13px;
+  padding: 12px 13px;
   border-bottom: 1px solid rgba(105, 73, 38, 0.18);
 }
 
@@ -430,21 +448,21 @@ svg {
 .stat-strip p {
   margin: 0;
   color: #745936;
-  font-size: 11px;
+  font-size: clamp(12px, 0.7rem + 0.15vw, 14px);
 }
 
 .stat-strip strong {
   display: block;
-  margin-top: 4px;
+  margin-top: 6px;
   color: #513921;
-  font-size: 15px;
+  font-size: clamp(17px, 0.95rem + 0.2vw, 20px);
 }
 
 .hall-columns {
   display: grid;
-  grid-template-columns: minmax(0, 1.5fr) minmax(300px, 0.85fr);
-  gap: 14px;
-  margin-top: 14px;
+  grid-template-columns: minmax(0, 1.45fr) minmax(340px, 0.9fr);
+  gap: 20px;
+  margin-top: 20px;
 }
 
 .lower-columns {
@@ -452,11 +470,11 @@ svg {
 }
 
 .quest-row {
-  min-height: 78px;
+  min-height: 92px;
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin: 0 18px;
+  gap: 16px;
+  margin: 0 22px;
   border-bottom: 1px solid rgba(105, 73, 38, 0.15);
 }
 
@@ -484,18 +502,18 @@ svg {
 .quest-main > div {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 
 .quest-main h3 {
   margin: 0;
-  font-size: 14px;
+  font-size: clamp(16px, 0.9rem + 0.15vw, 18px);
 }
 
 .quest-main p {
-  margin: 4px 0 0;
+  margin: 6px 0 0;
   color: #735936;
-  font-size: 11px;
+  font-size: 13px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -503,18 +521,18 @@ svg {
 
 .quest-category, .xp-reward {
   color: #76502a;
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .attribute-row {
-  height: 36px;
+  height: 44px;
   display: grid;
-  grid-template-columns: 82px 1fr 24px;
+  grid-template-columns: 96px 1fr 28px;
   align-items: center;
-  gap: 8px;
-  padding: 0 18px;
+  gap: 10px;
+  padding: 0 22px;
   color: #735936;
-  font-size: 11px;
+  font-size: 13px;
 }
 
 .attribute-track {
@@ -535,7 +553,7 @@ svg {
 }
 
 .empty-state, .empty-line {
-  padding: 34px 18px;
+  padding: 48px 24px;
   color: #735936;
   text-align: center;
 }
@@ -543,8 +561,8 @@ svg {
 .mini-achievement {
   display: flex;
   align-items: center;
-  gap: 11px;
-  padding: 11px 18px;
+  gap: 14px;
+  padding: 15px 22px;
   border-bottom: 1px solid rgba(105, 73, 38, 0.13);
 }
 
@@ -559,27 +577,28 @@ svg {
 }
 
 .mini-achievement strong {
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .mini-achievement p {
-  margin: 3px 0 0;
+  margin: 4px 0 0;
   color: #735936;
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .chronicle-preview {
-  padding: 16px 18px;
+  padding: 22px;
 }
 
 .chronicle-preview time {
   color: #76502a;
-  font-size: 11px;
+  font-size: 13px;
 }
 
 .chronicle-preview p {
   color: #735936;
-  font-size: 12px;
+  font-size: 14px;
+  line-height: 1.65;
 }
 
 .board-toolbar {
@@ -1254,7 +1273,13 @@ select {
     grid-template-columns: 1fr;
   }
   .stat-strip {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: 1fr 1fr;
+  }
+  .stat-strip > div:nth-child(2) {
+    border-right: 0;
+  }
+  .stat-strip > div:nth-child(n+3) {
+    border-bottom: 0;
   }
   .inventory-grid {
     grid-template-columns: repeat(3, 1fr);
@@ -1308,7 +1333,8 @@ select {
     border: 1px solid transparent !important;
     color: #f4dfa9 !important;
     text-align: center !important;
-    font-size: 8px !important;
+    font-size: 9px !important;
+    line-height: 1.05 !important;
   }
   .nav-item svg {
     width: 21px !important;
@@ -1335,7 +1361,7 @@ select {
     padding: 8px 12px;
   }
   .topbar h1 {
-    font-size: 17px;
+    font-size: clamp(18px, 5vw, 22px);
   }
   .topbar .eyebrow {
     display: none;
@@ -1355,19 +1381,19 @@ select {
     height: 38px;
   }
   .content {
-    padding: 12px 10px 86px;
+    padding: 20px 16px 96px;
   }
   .hall-grid, .hall-columns, .lower-columns {
     grid-template-columns: 1fr;
-    gap: 10px;
+    gap: 14px;
   }
   .hall-columns {
-    margin-top: 10px;
+    margin-top: 14px;
   }
   .hero-panel {
-    min-height: 145px;
-    padding: 14px;
-    gap: 13px;
+    min-height: 165px;
+    padding: 18px;
+    gap: 16px;
   }
   .character-portrait {
     width: 88px;
@@ -1383,24 +1409,24 @@ select {
   }
   .stat-strip {
     grid-template-columns: 1fr 1fr;
-    padding: 5px;
+    padding: 7px;
   }
   .stat-strip > div {
-    min-height: 68px;
-    padding: 7px;
+    min-height: 78px;
+    padding: 10px;
     border-right: 0 !important;
     border-bottom: 1px solid rgba(105, 73, 38, 0.18) !important;
   }
   .panel-header {
-    padding: 13px 14px 10px;
+    padding: 15px 16px 13px;
   }
   .quest-row {
-    min-height: 72px;
-    margin: 0 14px;
+    min-height: 82px;
+    margin: 0 16px;
   }
   .attribute-row {
-    height: 36px;
-    padding: 0 14px;
+    height: 40px;
+    padding: 0 16px;
   }
   .board-toolbar {
     grid-template-columns: 1fr 1fr;
@@ -1455,6 +1481,21 @@ select {
   }
 }
 @media (max-width: 480px) {
+  .content {
+    padding: 16px 12px 94px;
+  }
+  .hero-details h2 {
+    font-size: 18px;
+  }
+  .stat-strip p {
+    font-size: 11px;
+  }
+  .stat-strip strong {
+    font-size: 16px;
+  }
+  .panel-header h2 {
+    font-size: 18px;
+  }
   .hero-panel {
     align-items: flex-start;
   }
