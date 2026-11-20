@@ -10,6 +10,15 @@ const content = document.querySelector('#content');
 const modalBackdrop = document.querySelector('#modalBackdrop');
 const questForm = document.querySelector('#questForm');
 
+const questTemplates = [
+  { title: 'Take a short walk', description: 'Go for a 15-minute walk.', category: 'Daily Quest', difficulty: 'Normal', attribute: 'Strength' },
+  { title: 'Read for 15 minutes', description: 'Read a book or article for a little while.', category: 'Daily Quest', difficulty: 'Easy', attribute: 'Intelligence' },
+  { title: 'Plan tomorrow', description: 'Choose a few priorities for tomorrow.', category: 'Daily Quest', difficulty: 'Easy', attribute: 'Wisdom' },
+  { title: 'Practice a skill', description: 'Spend 20 minutes practising a hobby.', category: 'Side Quest', difficulty: 'Normal', attribute: 'Dexterity' },
+  { title: 'Take a mindful break', description: 'Pause and take a few calm breaths.', category: 'Daily Quest', difficulty: 'Easy', attribute: 'Vitality' },
+  { title: 'Tidy one small space', description: 'Reset one drawer, shelf, or surface.', category: 'Side Quest', difficulty: 'Easy', attribute: 'Discipline' }
+];
+
 const avatars = [
   { id: 'wayfarer', name: 'Wayfarer', art: '<circle cx="60" cy="60" r="57" fill="#83c7bd"/><path d="M16 116c3-25 18-39 44-39s41 14 44 39H16Z" fill="#315d56"/><path d="M49 73h22v20H49z" fill="#e2b77f"/><path d="M35 48c0-20 11-32 25-32s25 12 25 32v13c0 18-11 29-25 29S35 79 35 61V48Z" fill="#f3cf9d"/><path d="M34 49c-2-26 10-39 28-39 17 0 27 13 25 37-8-4-13-11-15-19-9 11-22 17-38 21Z" fill="#67432f"/><path d="M44 57h7v5h-7zm25 0h7v5h-7z" fill="#382a22"/><path d="M52 72c5 4 11 4 16 0" fill="none" stroke="#a9574a" stroke-width="3" stroke-linecap="round"/><path d="m45 82 15 13 15-13" fill="#e7d29d"/>' },
   { id: 'knight', name: 'Knight', art: '<circle cx="60" cy="60" r="57" fill="#8bc5df"/><path d="M13 117c3-25 19-40 47-40s44 15 47 40H13Z" fill="#55718b"/><path d="m43 76 17 17 17-17 13 9-8 32H38l-8-32z" fill="#c5d5d9" stroke="#586b76" stroke-width="3"/><path d="M31 48c0-23 11-36 29-36s29 13 29 36v20c0 9-8 15-16 15H47c-8 0-16-6-16-15V48Z" fill="#d9e3df" stroke="#566873" stroke-width="4"/><path d="M39 52c0-15 8-24 21-24s21 9 21 24v13H39V52Z" fill="#efc997"/><path d="M28 49 34 27 60 9l26 18 6 22-13-7-4-13-15 9-17-9-4 14z" fill="#758c96" stroke="#4c6069" stroke-width="3"/><path d="M40 66h40v9H40z" fill="#6d8490"/><path d="M47 58h7v4h-7zm19 0h7v4h-7z" fill="#293742"/><path d="M58 67h5" stroke="#fff1bc" stroke-width="3"/><path d="m60 8 5 9h-10z" fill="#e7bd59"/>' },
@@ -104,7 +113,7 @@ function completedCount() {
 function sectionHeading(title, eyebrow) {
   document.querySelector('#pageTitle').textContent = title;
   document.querySelector('#pageEyebrow').textContent = eyebrow;
-  document.title = `${title} - QuestLog`;
+  document.title = `${title} - Little Legends`;
 }
 
 function renderHall() {
@@ -203,7 +212,7 @@ function renderQuestBoard() {
   ).sort((a, b) => (a.status === b.status ? b.createdDate.localeCompare(a.createdDate) : a.status === 'completed' ? 1 : -1));
   document.querySelector('#questBoard').innerHTML = quests.length ? quests.map(q => `<article class="quest-card ${q.status === 'completed' ? 'completed' : ''}">
     <button class="quest-check ${q.status === 'completed' ? 'checked' : ''}" type="button" data-toggle-quest="${q.id}" aria-label="${q.status === 'completed' ? 'Reopen' : 'Complete'} ${escapeHtml(q.title)}"></button>
-    <div class="quest-card-main"><div class="quest-meta"><span>${escapeHtml(q.category)}</span><span>${escapeHtml(q.difficulty)}</span></div><h3>${escapeHtml(q.title)}</h3><p>${escapeHtml(q.description || 'No further account recorded.')}</p><div class="quest-footer"><span>${escapeHtml(q.attribute)}</span><span>${q.deadline ? `Due ${escapeHtml(q.deadline)}` : 'No deadline'}</span></div></div>
+    <div class="quest-card-main"><div class="quest-meta"><span>${escapeHtml(q.category)}</span><span>${escapeHtml(q.difficulty)}</span></div><h3>${escapeHtml(q.title)}</h3><p>${escapeHtml(q.description || 'No further account recorded.')}</p><div class="quest-footer"><span>${escapeHtml(q.attribute)}</span></div></div>
     <div class="quest-card-actions"><strong>${XP_REWARDS[q.difficulty]} XP</strong><button type="button" data-edit-quest="${q.id}">Edit</button><button type="button" data-delete-quest="${q.id}">Delete</button></div>
   </article>`).join('') : '<div class="panel empty-board"><h2>No quests found</h2><p>Try changing the filters or record a new undertaking.</p></div>';
   bindDynamicActions();
@@ -335,14 +344,14 @@ function openResetModal() {
   const modalTitle = document.querySelector('#modalTitle');
   const form = questForm;
   modalTitle.textContent = 'Reset progression';
-  form.innerHTML = `<p class="reset-warning">This will permanently erase all QuestLog progress stored in this browser.</p><div class="modal-actions"><button class="button button-ghost" id="cancelModal" type="button">Cancel</button><button class="button button-danger" type="submit">Reset Everything</button></div>`;
+  form.innerHTML = `<p class="reset-warning">This will permanently erase all Little Legends progress stored in this browser.</p><div class="modal-actions"><button class="button button-ghost" id="cancelModal" type="button">Cancel</button><button class="button button-danger" type="submit">Reset Everything</button></div>`;
   modalBackdrop.hidden = false;
   form.onsubmit = event => {
     event.preventDefault();
     state = createDefaultState();
     persist();
     closeModal();
-    notify('A new journey begins', 'QuestLog progression has been reset.', 'blood');
+    notify('A new journey begins', 'Little Legends progression has been reset.', 'blood');
   };
   document.querySelector('#cancelModal').addEventListener('click', closeModal);
   document.querySelector('#closeModal').addEventListener('click', closeModal);
@@ -350,23 +359,47 @@ function openResetModal() {
 
 function openQuestModal(quest = null) {
   questForm.reset();
+  const suggestions = quest ? '' : `
+    <fieldset class="quest-suggestions">
+      <legend>Need an idea? Choose a suggested quest</legend>
+      <div class="quest-template-grid">
+        ${questTemplates.map((template, index) => `<button class="quest-template" type="button" data-quest-template="${index}" aria-pressed="false">
+          <strong>${escapeHtml(template.title)}</strong>
+          <small>${escapeHtml(template.difficulty)} · ${XP_REWARDS[template.difficulty]} XP</small>
+        </button>`).join('')}
+      </div>
+    </fieldset>`;
   questForm.innerHTML = `
     <input type="hidden" name="id" value="${quest ? escapeHtml(quest.id) : ''}">
+    ${suggestions}
     <label>Quest title<input name="title" type="text" maxlength="80" required value="${quest ? escapeHtml(quest.title) : ''}" placeholder="Name this undertaking"></label>
     <label>Description<textarea name="description" maxlength="300" rows="3" placeholder="Add a brief account">${quest ? escapeHtml(quest.description) : ''}</textarea></label>
     <div class="form-grid">
       <label>Category<select name="category">${['Daily Quest','Main Quest','Side Quest','Guild Quest','Challenge'].map(v => `<option ${quest?.category === v ? 'selected' : ''}>${v}</option>`).join('')}</select></label>
       <label>Difficulty<select name="difficulty">${['Easy','Normal','Hard','Legendary'].map(v => `<option value="${v}" ${quest?.difficulty === v ? 'selected' : (v === 'Normal' && !quest ? 'selected' : '')}>${v} - ${XP_REWARDS[v]} XP</option>`).join('')}</select></label>
       <label>Attribute<select name="attribute">${['Strength','Intelligence','Wisdom','Dexterity','Vitality','Discipline'].map(v => `<option ${quest?.attribute === v ? 'selected' : (!quest && v === 'Discipline' ? 'selected' : '')}>${v}</option>`).join('')}</select></label>
-      <label>Deadline <span class="optional">(optional)</span><input name="deadline" type="date" value="${quest?.deadline || ''}"></label>
     </div>
     <div class="modal-actions"><button class="button button-ghost" id="cancelModal" type="button">Cancel</button><button class="button button-primary" type="submit">${quest ? 'Save Changes' : 'Record Quest'}</button></div>`;
   document.querySelector('#modalTitle').textContent = quest ? 'Edit Quest' : 'New Quest';
   modalBackdrop.hidden = false;
+  questForm.querySelectorAll('[data-quest-template]').forEach(button => button.addEventListener('click', () => {
+    const template = questTemplates[Number(button.dataset.questTemplate)];
+    if (!template) return;
+    questForm.elements.title.value = template.title;
+    questForm.elements.description.value = template.description;
+    questForm.elements.category.value = template.category;
+    questForm.elements.difficulty.value = template.difficulty;
+    questForm.elements.attribute.value = template.attribute;
+    questForm.querySelectorAll('[data-quest-template]').forEach(option => {
+      const selected = option === button;
+      option.classList.toggle('selected', selected);
+      option.setAttribute('aria-pressed', String(selected));
+    });
+  }));
   document.querySelector('#cancelModal').addEventListener('click', closeModal);
   document.querySelector('#closeModal').addEventListener('click', closeModal);
   questForm.onsubmit = submitQuest;
-  questForm.elements.title.focus();
+  (questForm.querySelector('[data-quest-template]') || questForm.elements.title).focus();
 }
 
 function closeModal() {
@@ -383,10 +416,10 @@ function submitQuest(event) {
   if (id) {
     const quest = state.quests.find(q => q.id === id);
     if (!quest) return;
-    Object.assign(quest, { title, description: data.get('description').trim(), category: data.get('category'), difficulty: data.get('difficulty'), attribute: data.get('attribute'), deadline: data.get('deadline') });
+    Object.assign(quest, { title, description: data.get('description').trim(), category: data.get('category'), difficulty: data.get('difficulty'), attribute: data.get('attribute') });
     addChronicle('quest-edited', `The account of "${title}" was revised.`);
   } else {
-    const quest = { id: uid(), title, description: data.get('description').trim(), category: data.get('category'), difficulty: data.get('difficulty'), attribute: data.get('attribute'), deadline: data.get('deadline'), status: 'active', createdDate: new Date().toISOString(), completionDate: null };
+    const quest = { id: uid(), title, description: data.get('description').trim(), category: data.get('category'), difficulty: data.get('difficulty'), attribute: data.get('attribute'), status: 'active', createdDate: new Date().toISOString(), completionDate: null };
     state.quests.unshift(quest);
     addChronicle('quest-created', `A new quest was recorded: "${title}".`, quest.id);
   }

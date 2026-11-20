@@ -1,8 +1,8 @@
-# QuestLog
+# Little Legends
 
-QuestLog is a medieval fantasy RPG-inspired productivity app. Turn everyday tasks into quests, earn XP, build streaks, and keep a chronicle of your progress.
+Little Legends is a medieval fantasy RPG-inspired productivity app. Turn everyday tasks into quests, earn XP, build streaks, and keep a chronicle of your progress.
 
-**Live app:** [namahka.github.io/QuestLog](https://namahka.github.io/QuestLog/)
+**Live app:** [Little Legends](https://namahka.github.io/QuestLog/)
 
 ## Features
 

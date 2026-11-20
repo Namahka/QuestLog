@@ -30,7 +30,7 @@ export function loadState() {
     if (!validState(parsed)) throw new Error('Unsupported save data');
     return parsed;
   } catch (error) {
-    console.error('Could not load QuestLog state:', error);
+    console.error('Could not load Little Legends state:', error);
     return createDefaultState();
   }
 }
@@ -39,6 +39,6 @@ export function saveState(state) {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   } catch (error) {
-    console.error('Could not save QuestLog state:', error);
+    console.error('Could not save Little Legends state:', error);
   }
 }
