@@ -113,7 +113,7 @@ function completedCount() {
 function sectionHeading(title, eyebrow) {
   document.querySelector('#pageTitle').textContent = title;
   document.querySelector('#pageEyebrow').textContent = eyebrow;
-  document.title = `${title} - Little Legends`;
+  document.title = `${title} - QuestHaven`;
 }
 
 function renderHall() {
@@ -147,14 +147,10 @@ function renderHall() {
         <header class="panel-header"><div><p class="eyebrow">Today</p><h2>Active Quests</h2></div><button class="text-button" data-page-link="quests">View board</button></header>
         ${active.length ? active.slice(0, 4).map(questRow).join('') : '<div class="empty-state"><p>No active quests. The board awaits a new undertaking.</p><button class="button button-primary" data-add-quest>Add a quest</button></div>'}
       </article>
-      <aside class="panel attributes-preview">
-        <header class="panel-header"><div><p class="eyebrow">Character</p><h2>Attributes</h2></div></header>
-        ${attributeList()}
-      </aside>
     </section>
     <section class="hall-columns lower-columns">
       <article class="panel"><header class="panel-header"><div><p class="eyebrow">Recent</p><h2>Recent Achievements</h2></div><button class="text-button" data-page-link="achievements">View all</button></header>${achievementPreview()}</article>
-      <article class="panel"><header class="panel-header"><div><p class="eyebrow">Chronicle</p><h2>Latest Entry</h2></div><button class="text-button" data-page-link="chronicle">Read all</button></header>${chroniclePreview()}</article>
+      <article class="panel"><header class="panel-header"><div><p class="eyebrow">Your Diary</p><h2>Latest Page</h2></div><button class="text-button" data-page-link="chronicle">Open diary</button></header>${chroniclePreview()}</article>
     </section>`;
   bindDynamicActions();
 }
@@ -181,9 +177,9 @@ function achievementPreview() {
 }
 
 function chroniclePreview() {
-  const entry = state.chronicle[0];
-  if (!entry) return '<div class="empty-line">The chronicle is waiting.</div>';
-  return `<div class="chronicle-preview"><time>${new Date(entry.timestamp).toLocaleDateString()}</time><p>${escapeHtml(entry.description)}</p></div>`;
+  const entry = state.journalEntries.slice().sort((a, b) => b.timestamp.localeCompare(a.timestamp))[0];
+  if (!entry) return '<div class="chronicle-preview empty-diary"><p>Your diary is waiting for its first page.</p><button class="button button-primary" type="button" data-page-link="chronicle">Write an entry</button></div>';
+  return `<div class="chronicle-preview"><time>${new Date(entry.timestamp).toLocaleDateString()}</time>${entry.title ? `<h3>${escapeHtml(entry.title)}</h3>` : ''}<p>${escapeHtml(entry.content)}</p></div>`;
 }
 
 function renderQuests() {
@@ -254,9 +250,103 @@ function renderAchievements() {
 }
 
 function renderChronicle() {
-  sectionHeading('Chronicle', 'Recorded Journey');
-  const entries = state.chronicle.length ? state.chronicle.map(entry => `<article class="chronicle-entry"><time datetime="${escapeHtml(entry.timestamp)}">${new Date(entry.timestamp).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}</time><div class="chronicle-rune"></div><div><p class="eyebrow">${escapeHtml(entry.type)}</p><p>${escapeHtml(entry.description)}</p></div></article>`).join('') : '<div class="empty-state"><p>No entries have been written.</p></div>';
-  content.innerHTML = `<section class="panel chronicle-list">${entries}</section>`;
+  sectionHeading("Adventurer's Diary", 'A Place for Your Thoughts');
+  const journalEntries = state.journalEntries.slice().sort((a, b) => b.timestamp.localeCompare(a.timestamp));
+  const pages = journalEntries.length ? journalEntries.map(entry => `<article class="diary-entry">
+    <header class="diary-entry-header"><time datetime="${escapeHtml(entry.timestamp)}">${new Date(entry.timestamp).toLocaleString([], { dateStyle: 'long', timeStyle: 'short' })}</time>
+      <div class="diary-entry-actions"><button type="button" data-edit-journal="${escapeHtml(entry.id)}">Edit</button><button type="button" data-delete-journal="${escapeHtml(entry.id)}">Delete</button></div>
+    </header>
+    ${entry.title ? `<h3>${escapeHtml(entry.title)}</h3>` : ''}
+    <p class="diary-entry-content">${escapeHtml(entry.content)}</p>
+  </article>`).join('') : '<div class="empty-state diary-empty"><h3>Your first page is waiting</h3><p>Write down a thought, a small victory, or anything you want to remember.</p></div>';
+  const events = state.chronicle.length ? state.chronicle.map(entry => `<article class="chronicle-entry"><time datetime="${escapeHtml(entry.timestamp)}">${new Date(entry.timestamp).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}</time><div class="chronicle-rune"></div><div><p class="eyebrow">${escapeHtml(entry.type)}</p><p>${escapeHtml(entry.description)}</p></div></article>`).join('') : '<div class="empty-state"><p>No adventure events recorded yet.</p></div>';
+  content.innerHTML = `<section class="diary-layout">
+    <article class="panel diary-compose">
+      <header class="panel-header"><div><p class="eyebrow">Private Pages</p><h2 id="diaryFormHeading">Write a page</h2></div></header>
+      <form id="diaryForm">
+        <input id="diaryEntryId" type="hidden">
+        <label for="diaryTitle">Title <span>(optional)</span><input id="diaryTitle" maxlength="80" placeholder="A thought worth keeping"></label>
+        <label for="diaryContent">Your entry<textarea id="diaryContent" rows="7" maxlength="5000" placeholder="What is on your mind today?" required></textarea></label>
+        <div class="diary-form-actions"><small>Only saved on this device.</small><button class="button button-primary" id="saveDiaryEntry" type="submit">Save to diary</button></div>
+        <button class="diary-cancel-edit" id="cancelDiaryEdit" type="button" hidden>Cancel editing</button>
+      </form>
+    </article>
+    <section class="panel diary-pages" aria-label="Your diary pages">
+      <header class="panel-header"><div><p class="eyebrow">Your Reflections</p><h2>Diary Pages</h2></div><span class="count-seal">${journalEntries.length}</span></header>
+      ${pages}
+    </section>
+  </section>
+  <details class="panel adventure-log"><summary>Adventure events</summary><div class="chronicle-list">${events}</div></details>`;
+  const form = document.querySelector('#diaryForm');
+  const entryIdInput = document.querySelector('#diaryEntryId');
+  const titleInput = document.querySelector('#diaryTitle');
+  const contentInput = document.querySelector('#diaryContent');
+  const saveButton = document.querySelector('#saveDiaryEntry');
+  const cancelButton = document.querySelector('#cancelDiaryEdit');
+
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    const title = titleInput.value.trim();
+    const text = contentInput.value.trim();
+    if (!text) {
+      notify('Write a page first', 'Add a few words before saving your diary entry.', 'blood');
+      contentInput.focus();
+      return;
+    }
+
+    if (entryIdInput.value) {
+      const entry = state.journalEntries.find(item => item.id === entryIdInput.value);
+      if (!entry) {
+        notify('Page not found', 'This diary page could not be found. Please try again.', 'blood');
+        return;
+      }
+      entry.title = title;
+      entry.content = text;
+    } else {
+      state.journalEntries.unshift({ id: uid(), title, content: text, timestamp: new Date().toISOString() });
+    }
+    persist();
+    notify('Diary saved', 'Your thoughts have been written to your diary.');
+  });
+
+  document.querySelectorAll('[data-edit-journal]').forEach(button => button.addEventListener('click', () => {
+    const entry = state.journalEntries.find(item => item.id === button.dataset.editJournal);
+    if (!entry) {
+      notify('Page not found', 'This diary page could not be found.', 'blood');
+      return;
+    }
+    entryIdInput.value = entry.id;
+    titleInput.value = entry.title || '';
+    contentInput.value = entry.content;
+    document.querySelector('#diaryFormHeading').textContent = 'Edit diary page';
+    saveButton.textContent = 'Save changes';
+    cancelButton.hidden = false;
+    titleInput.focus();
+    form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }));
+
+  document.querySelectorAll('[data-delete-journal]').forEach(button => button.addEventListener('click', () => {
+    const entry = state.journalEntries.find(item => item.id === button.dataset.deleteJournal);
+    if (!entry) {
+      notify('Page not found', 'This diary page could not be found.', 'blood');
+      return;
+    }
+    openConfirmModal('Delete diary page?', 'This page will be permanently removed from your diary.', () => {
+      state.journalEntries = state.journalEntries.filter(item => item.id !== entry.id);
+      closeModal();
+      persist();
+      notify('Diary page removed', 'The page has been removed from your diary.');
+    });
+  }));
+
+  cancelButton.addEventListener('click', () => {
+    form.reset();
+    entryIdInput.value = '';
+    document.querySelector('#diaryFormHeading').textContent = 'Write a page';
+    saveButton.textContent = 'Save to diary';
+    cancelButton.hidden = true;
+    titleInput.focus();
+  });
   bindDynamicActions();
 }
 
@@ -287,7 +377,7 @@ function renderSettings() {
       <label class="toggle-row"><span><strong>Animations</strong><small>Enable interface motion</small></span><input type="checkbox" data-setting="animations" ${state.settings.animations ? 'checked' : ''}></label>
       <label class="toggle-row"><span><strong>Reduced motion</strong><small>Minimize decorative movement</small></span><input type="checkbox" data-setting="reducedMotion" ${state.settings.reducedMotion ? 'checked' : ''}></label>
     </article>
-    <article class="panel reset-panel"><header class="panel-header"><div><p class="eyebrow">Danger</p><h2>Begin Again</h2></div></header><p>Resetting removes quests, XP, items, achievements and chronicle entries.</p><button class="button button-danger" id="resetProgress">Reset all progression</button></article>
+    <article class="panel reset-panel"><header class="panel-header"><div><p class="eyebrow">Danger</p><h2>Begin Again</h2></div></header><p>Resetting removes quests, XP, items, achievements, diary pages and adventure events.</p><button class="button button-danger" id="resetProgress">Reset all progression</button></article>
   </section>`;
   const characterForm = document.querySelector('#characterForm');
   document.querySelectorAll('[data-avatar]').forEach(button => button.addEventListener('click', () => {
@@ -344,14 +434,14 @@ function openResetModal() {
   const modalTitle = document.querySelector('#modalTitle');
   const form = questForm;
   modalTitle.textContent = 'Reset progression';
-  form.innerHTML = `<p class="reset-warning">This will permanently erase all Little Legends progress stored in this browser.</p><div class="modal-actions"><button class="button button-ghost" id="cancelModal" type="button">Cancel</button><button class="button button-danger" type="submit">Reset Everything</button></div>`;
+  form.innerHTML = `<p class="reset-warning">This will permanently erase all QuestHaven progress stored in this browser.</p><div class="modal-actions"><button class="button button-ghost" id="cancelModal" type="button">Cancel</button><button class="button button-danger" type="submit">Reset Everything</button></div>`;
   modalBackdrop.hidden = false;
   form.onsubmit = event => {
     event.preventDefault();
     state = createDefaultState();
     persist();
     closeModal();
-    notify('A new journey begins', 'Little Legends progression has been reset.', 'blood');
+    notify('A new journey begins', 'QuestHaven progression has been reset.', 'blood');
   };
   document.querySelector('#cancelModal').addEventListener('click', closeModal);
   document.querySelector('#closeModal').addEventListener('click', closeModal);
@@ -365,20 +455,18 @@ function openQuestModal(quest = null) {
       <div class="quest-template-grid">
         ${questTemplates.map((template, index) => `<button class="quest-template" type="button" data-quest-template="${index}" aria-pressed="false">
           <strong>${escapeHtml(template.title)}</strong>
-          <small>${escapeHtml(template.difficulty)} · ${XP_REWARDS[template.difficulty]} XP</small>
+          <small>${escapeHtml(template.difficulty)}</small>
         </button>`).join('')}
       </div>
     </fieldset>`;
   questForm.innerHTML = `
     <input type="hidden" name="id" value="${quest ? escapeHtml(quest.id) : ''}">
+      <input type="hidden" name="category" value="${escapeHtml(quest?.category || 'Daily Quest')}">
+      <input type="hidden" name="difficulty" value="${escapeHtml(quest?.difficulty || 'Normal')}">
+      <input type="hidden" name="attribute" value="${escapeHtml(quest?.attribute || 'Discipline')}">
     ${suggestions}
     <label>Quest title<input name="title" type="text" maxlength="80" required value="${quest ? escapeHtml(quest.title) : ''}" placeholder="Name this undertaking"></label>
     <label>Description<textarea name="description" maxlength="300" rows="3" placeholder="Add a brief account">${quest ? escapeHtml(quest.description) : ''}</textarea></label>
-    <div class="form-grid">
-      <label>Category<select name="category">${['Daily Quest','Main Quest','Side Quest','Guild Quest','Challenge'].map(v => `<option ${quest?.category === v ? 'selected' : ''}>${v}</option>`).join('')}</select></label>
-      <label>Difficulty<select name="difficulty">${['Easy','Normal','Hard','Legendary'].map(v => `<option value="${v}" ${quest?.difficulty === v ? 'selected' : (v === 'Normal' && !quest ? 'selected' : '')}>${v} - ${XP_REWARDS[v]} XP</option>`).join('')}</select></label>
-      <label>Attribute<select name="attribute">${['Strength','Intelligence','Wisdom','Dexterity','Vitality','Discipline'].map(v => `<option ${quest?.attribute === v ? 'selected' : (!quest && v === 'Discipline' ? 'selected' : '')}>${v}</option>`).join('')}</select></label>
-    </div>
     <div class="modal-actions"><button class="button button-ghost" id="cancelModal" type="button">Cancel</button><button class="button button-primary" type="submit">${quest ? 'Save Changes' : 'Record Quest'}</button></div>`;
   document.querySelector('#modalTitle').textContent = quest ? 'Edit Quest' : 'New Quest';
   modalBackdrop.hidden = false;
@@ -555,3 +643,8 @@ document.addEventListener('keydown', event => {
 document.documentElement.classList.toggle('reduced-motion', state.settings.reducedMotion);
 updateChrome();
 render();
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./service-worker.js')
+    .catch(error => console.error('Could not register QuestHaven offline support:', error));
+}

@@ -12,6 +12,7 @@ export function createDefaultState() {
     achievements: [],
     streak: { current: 0, longest: 0, lastCompletionDate: null },
     chronicle: [{ id: crypto.randomUUID(), type: 'journey', description: 'Your chronicle begins. The road ahead is unwritten.', timestamp: new Date().toISOString() }],
+    journalEntries: [],
     settings: { sound: true, animations: true, reducedMotion: false, theme: 'Default' }
   };
 }
@@ -28,9 +29,19 @@ export function loadState() {
     if (!raw) return createDefaultState();
     const parsed = JSON.parse(raw);
     if (!validState(parsed)) throw new Error('Unsupported save data');
+    if (!Array.isArray(parsed.journalEntries)) {
+      if (parsed.journalEntries !== undefined) console.warn('Invalid QuestHaven diary data was skipped.');
+      parsed.journalEntries = [];
+    }
+    const journalEntries = parsed.journalEntries.filter(entry =>
+      entry && typeof entry.id === 'string' && typeof entry.content === 'string' &&
+      typeof entry.timestamp === 'string' && (entry.title === undefined || typeof entry.title === 'string')
+    );
+    if (journalEntries.length !== parsed.journalEntries.length) console.warn('Some invalid QuestHaven diary entries were skipped.');
+    parsed.journalEntries = journalEntries;
     return parsed;
   } catch (error) {
-    console.error('Could not load Little Legends state:', error);
+    console.error('Could not load QuestHaven state:', error);
     return createDefaultState();
   }
 }
@@ -39,6 +50,6 @@ export function saveState(state) {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   } catch (error) {
-    console.error('Could not save Little Legends state:', error);
+    console.error('Could not save QuestHaven state:', error);
   }
 }

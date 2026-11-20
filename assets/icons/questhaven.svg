@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="badge" x2="0" y2="1">
+      <stop stop-color="#9a5940"/>
+      <stop offset="1" stop-color="#663628"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" fill="#21160f"/>
+  <circle cx="256" cy="256" r="237" fill="url(#badge)" stroke="#d0a85a" stroke-width="18"/>
+  <circle cx="256" cy="256" r="216" fill="none" stroke="#b98757" stroke-width="8"/>
+  <g transform="translate(87.04 87.04) scale(.66)">
+    <path d="M256 32 437 96v128c0 117-75 203-181 256C150 437 75 341 75 224V96z" fill="#f1dca2"/>
+    <path d="m256 107-107 43v85c0 75 43 128 107 171 64-43 107-96 107-171v-85z" fill="#663628"/>
+    <path d="m256 139 32 75 75 32-75 32-32 75-32-75-75-32 75-32z" fill="#f1dca2"/>
+  </g>
+</svg>

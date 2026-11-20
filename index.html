@@ -2,9 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#171510">
-  <title>Little Legends - Adventurer's Chronicle</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#25452e">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="QuestHaven">
+  <title>QuestHaven - Adventurer's Chronicle</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="assets/icons/questhaven.svg">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/icons/questhaven-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/questhaven-180.png">
   <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
@@ -14,7 +22,7 @@
         <span class="brand-mark" aria-hidden="true">
           <svg viewBox="0 0 48 48"><path d="M24 3 41 9v12c0 11-7 19-17 24C14 40 7 32 7 21V9l17-6Zm0 7-10 4v8c0 7 4 12 10 16 6-4 10-9 10-16v-8l-10-4Z"/><path d="m24 13 3 7 7 3-7 3-3 7-3-7-7-3 7-3 3-7Z"/></svg>
         </span>
-        <span class="brand-copy"><strong>Little Legends</strong><small>Adventurer's Guild</small></span>
+        <span class="brand-copy"><strong>QuestHaven</strong><small>Adventurer's Guild</small></span>
       </div>
 
       <nav class="primary-nav" aria-label="Primary navigation">
@@ -34,7 +42,7 @@
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h10v5l-2 3 3 2-6 10-6-10 3-2-2-3V2Zm2 3v1h6V5H9Zm3 12 3-5-3 1-3-1 3 5Z"/></svg><span>Achievements</span>
         </button>
         <button class="nav-item" type="button" data-page="chronicle">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h14v18H5V3Zm3 4v2h8V7H8Zm0 4v2h8v-2H8Zm0 4v2h5v-2H8Z"/></svg><span>Chronicle</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h14v18H5V3Zm3 4v2h8V7H8Zm0 4v2h8v-2H8Zm0 4v2h5v-2H8Z"/></svg><span>Diary</span>
         </button>
         <button class="nav-item" type="button" data-page="settings">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m20 13-2-1v-2l2-1-2-4-2 1-2-1V3h-4v2L8 6 6 5l-2 4 2 1v2l-2 1 2 4 2-1 2 1v2h4v-2l2-1 2 1 2-4Zm-8 2a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z"/></svg><span>Settings</span>
@@ -80,13 +88,11 @@
       </header>
       <form id="questForm">
         <input type="hidden" name="id">
+        <input type="hidden" name="category" value="Daily Quest">
+        <input type="hidden" name="difficulty" value="Normal">
+        <input type="hidden" name="attribute" value="Discipline">
         <label>Quest title<input name="title" type="text" maxlength="80" required placeholder="Name this undertaking"></label>
         <label>Description<textarea name="description" maxlength="300" rows="3" placeholder="Add a brief account"></textarea></label>
-        <div class="form-grid">
-          <label>Category<select name="category"><option>Daily Quest</option><option>Main Quest</option><option>Side Quest</option><option>Guild Quest</option><option>Challenge</option></select></label>
-          <label>Difficulty<select name="difficulty"><option value="Easy">Easy - 10 XP</option><option value="Normal" selected>Normal - 25 XP</option><option value="Hard">Hard - 50 XP</option><option value="Legendary">Legendary - 100 XP</option></select></label>
-          <label>Attribute<select name="attribute"><option value="Strength">Strength</option><option value="Intelligence">Intelligence</option><option value="Wisdom">Wisdom</option><option value="Dexterity">Dexterity</option><option value="Vitality">Vitality</option><option value="Discipline">Discipline</option></select></label>
-        </div>
         <div class="modal-actions"><button class="button button-ghost" id="cancelModal" type="button">Cancel</button><button class="button button-primary" type="submit">Record Quest</button></div>
       </form>
     </section>
