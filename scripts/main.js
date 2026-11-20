@@ -117,7 +117,7 @@ function sectionHeading(title, eyebrow) {
 }
 
 function renderHall() {
-  sectionHeading('Welcome back, adventurer', 'Adventurer\'s Hall');
+  sectionHeading('Welcome back, adventurer', 'Home');
   const active = state.quests.filter(q => q.status !== 'completed');
   const completed = state.quests.filter(q => q.status === 'completed');
   const today = new Date().toISOString().slice(0, 10);

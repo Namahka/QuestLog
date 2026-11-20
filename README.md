@@ -8,8 +8,8 @@ QuestHaven is a medieval fantasy RPG-inspired productivity app. Turn everyday ta
 
 QuestHaven can be added to a device's home screen from its HTTPS GitHub Pages URL.
 
-- **iPhone or iPad:** Open the app in Safari, tap **Share**, then **Add to Home Screen**.
-- **Android:** Open the app in Chrome, open the menu, then choose **Install app** or **Add to Home screen**.
+- **iPhone or iPad:** In Safari, tap **Share** → **Add to Home Screen** and leave **Open as Web App** enabled.
+- **Android:** In Chrome, open the menu and choose **Install app**. **Add to Home screen** can create a regular browser shortcut instead.
 
 The installed app opens without browser controls and caches its app shell for offline use. Quest progress remains stored locally in the browser.
 

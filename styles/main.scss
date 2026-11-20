@@ -43,6 +43,7 @@ svg{width:1.25em;height:1.25em;fill:currentColor}
 }
 .nav-item svg{width:19px;height:19px;color:#b6a06d}
 .nav-item:hover{border-color:#a7864e;background:rgba(225,199,137,.09);color:#f5e5b6}
+.nav-label-short{display:none}
 .nav-item.active{
   border:2px solid #c0a05a;
   background:linear-gradient(180deg,#80613a,#5b4429 52%,#46331f);
@@ -242,11 +243,11 @@ select{padding:0 9px}.button{min-height:44px;padding:0 18px;border:2px solid #ff
     background:linear-gradient(180deg,#60452b,#2d2016)!important;box-shadow:0 -4px 12px rgba(0,0,0,.4)!important;z-index:80
   }
   .brand,.sidebar-settings,.level-seal{display:none!important}
-  .primary-nav{height:66px;margin:0;display:grid!important;grid-template-columns:repeat(7,minmax(0,1fr));gap:1px}
+  .primary-nav{height:66px;margin:0;display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr));gap:1px}
   .menu-button{display:none!important}
   .nav-item{width:100%!important;min-width:0!important;height:66px!important;min-height:66px!important;display:flex!important;flex-direction:column!important;justify-content:center!important;gap:3px!important;margin:0!important;padding:4px 1px!important;border:1px solid transparent!important;color:#f4dfa9!important;text-align:center!important;font-size:clamp(10px,2vw,11px)!important;line-height:1.1!important}
-  .nav-item span{max-width:100%}
-  .nav-item[data-page="achievements"] span{font-size:clamp(9px,1.8vw,10px)}
+  .nav-item .nav-label-full{display:none!important}
+  .nav-item .nav-label-short{display:block;width:100%;min-width:0;max-width:100%;font-size:clamp(9px,2.4vw,10px);line-height:1.1}
   .nav-item svg{width:23px!important;height:23px!important;color:#ffd865!important}
   .nav-item.active{border:2px solid #fff0a2!important;background:linear-gradient(180deg,#f36b4e,#a92c33)!important;color:#fff4bb!important;box-shadow:0 0 0 1px #71371e,inset 0 2px rgba(255,255,255,.3),0 2px 0 #57291d}
   .nav-item.active svg{color:#fff2a1!important}

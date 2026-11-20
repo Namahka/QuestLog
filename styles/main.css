@@ -134,6 +134,10 @@ svg {
   color: #f5e5b6;
 }
 
+.nav-label-short {
+  display: none;
+}
+
 .nav-item.active {
   border: 2px solid #c0a05a;
   background: linear-gradient(180deg, #80613a, #5b4429 52%, #46331f);
@@ -1545,7 +1549,7 @@ select {
     height: 66px;
     margin: 0;
     display: grid !important;
-    grid-template-columns: repeat(7, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 1px;
   }
   .menu-button {
@@ -1568,11 +1572,16 @@ select {
     font-size: clamp(10px, 2vw, 11px) !important;
     line-height: 1.1 !important;
   }
-  .nav-item span {
-    max-width: 100%;
+  .nav-item .nav-label-full {
+    display: none !important;
   }
-  .nav-item[data-page=achievements] span {
-    font-size: clamp(9px, 1.8vw, 10px);
+  .nav-item .nav-label-short {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    font-size: clamp(9px, 2.4vw, 10px);
+    line-height: 1.1;
   }
   .nav-item svg {
     width: 23px !important;
