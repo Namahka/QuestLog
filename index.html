@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#171510">
+  <title>QuestLog - Adventurer's Chronicle</title>
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 48 48"><path d="M24 3 41 9v12c0 11-7 19-17 24C14 40 7 32 7 21V9l17-6Zm0 7-10 4v8c0 7 4 12 10 16 6-4 10-9 10-16v-8l-10-4Z"/><path d="m24 13 3 7 7 3-7 3-3 7-3-7-7-3 7-3 3-7Z"/></svg>
+        </span>
+        <span class="brand-copy"><strong>QuestLog</strong><small>Adventurer's Guild</small></span>
+      </div>
+
+      <nav class="primary-nav" aria-label="Primary navigation">
+        <button class="nav-item active" type="button" data-page="hall" aria-current="page">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11 12 4l9 7v9H15v-6H9v6H3v-9Z"/></svg><span>Adventurer's Hall</span>
+        </button>
+        <button class="nav-item" type="button" data-page="quests">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10l3 3v15H4V6l3-3Zm2 2v4h6V5H9Zm-2 8h10v-2H7v2Zm0 4h7v-2H7v2Z"/></svg><span>Quest Board</span>
+        </button>
+        <button class="nav-item" type="button" data-page="character">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm-9 9c0-5 4-8 9-8s9 3 9 8H3Z"/></svg><span>Character</span>
+        </button>
+        <button class="nav-item" type="button" data-page="inventory">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l2 13H3L5 8Zm3 0V6a4 4 0 0 1 8 0v2h-2V6a2 2 0 1 0-4 0v2H8Z"/></svg><span>Inventory</span>
+        </button>
+        <button class="nav-item" type="button" data-page="achievements">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h10v5l-2 3 3 2-6 10-6-10 3-2-2-3V2Zm2 3v1h6V5H9Zm3 12 3-5-3 1-3-1 3 5Z"/></svg><span>Achievements</span>
+        </button>
+        <button class="nav-item" type="button" data-page="chronicle">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h14v18H5V3Zm3 4v2h8V7H8Zm0 4v2h8v-2H8Zm0 4v2h5v-2H8Z"/></svg><span>Chronicle</span>
+        </button>
+        <button class="nav-item" type="button" data-page="settings">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m20 13-2-1v-2l2-1-2-4-2 1-2-1V3h-4v2L8 6 6 5l-2 4 2 1v2l-2 1 2 4 2-1 2 1v2h4v-2l2-1 2 1 2-4Zm-8 2a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z"/></svg><span>Settings</span>
+        </button>
+      </nav>
+
+      <div class="level-seal">
+        <span id="sidebarLevel">Level 1</span>
+        <span id="sidebarTitle">Wayfarer</span>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <button class="menu-button" id="menuButton" type="button" aria-label="Open navigation" aria-expanded="false">
+          <svg viewBox="0 0 24 24"><path d="M3 6h18v2H3V6Zm0 5h18v2H3v-2Zm0 5h18v2H3v-2Z"/></svg>
+        </button>
+        <div>
+          <p class="eyebrow" id="pageEyebrow">Adventurer's Hall</p>
+          <h1 id="pageTitle">Welcome back</h1>
+        </div>
+        <div class="topbar-actions">
+          <div class="streak-badge" title="Current streak">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2c1 5-3 6-1 10 2-1 3-3 3-6 4 3 6 7 4 11-2 4-10 5-14 0-4-5 1-12 8-15Zm-2 18c3 0 5-2 4-5-2 1-3 0-3-2-2 2-4 4-1 7Z"/></svg>
+            <span id="topStreak">0</span>
+          </div>
+          <button class="icon-button" id="quickAddButton" type="button" aria-label="Create quest">
+            <svg viewBox="0 0 24 24"><path d="M11 5h2v6h6v2h-6v6h-2v-6H5v-2h6V5Z"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <div class="content" id="content" tabindex="-1"></div>
+    </main>
+  </div>
+
+  <div class="toast-region" id="toastRegion" aria-live="polite" aria-atomic="false"></div>
+  <div class="modal-backdrop" id="modalBackdrop" hidden>
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <header class="modal-header">
+        <div><p class="eyebrow">Quest Ledger</p><h2 id="modalTitle">New Quest</h2></div>
+        <button class="icon-button" id="closeModal" type="button" aria-label="Close modal">&times;</button>
+      </header>
+      <form id="questForm">
+        <input type="hidden" name="id">
+        <label>Quest title<input name="title" type="text" maxlength="80" required placeholder="Name this undertaking"></label>
+        <label>Description<textarea name="description" maxlength="300" rows="3" placeholder="Add a brief account"></textarea></label>
+        <div class="form-grid">
+          <label>Category<select name="category"><option>Daily Quest</option><option>Main Quest</option><option>Side Quest</option><option>Guild Quest</option><option>Challenge</option></select></label>
+          <label>Difficulty<select name="difficulty"><option value="Easy">Easy - 10 XP</option><option value="Normal" selected>Normal - 25 XP</option><option value="Hard">Hard - 50 XP</option><option value="Legendary">Legendary - 100 XP</option></select></label>
+          <label>Attribute<select name="attribute"><option value="Strength">Strength</option><option value="Intelligence">Intelligence</option><option value="Wisdom">Wisdom</option><option value="Dexterity">Dexterity</option><option value="Vitality">Vitality</option><option value="Discipline">Discipline</option></select></label>
+          <label>Deadline <span class="optional">(optional)</span><input name="deadline" type="date"></label>
+        </div>
+        <div class="modal-actions"><button class="button button-ghost" id="cancelModal" type="button">Cancel</button><button class="button button-primary" type="submit">Record Quest</button></div>
+      </form>
+    </section>
+  </div>
+
+  <script type="module" src="scripts/main.js"></script>
+</body>
+</html>
